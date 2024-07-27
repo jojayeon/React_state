@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button id="toggle-button">다크 모드 전환</button>
+    <script>
+      const body = document.body;
+      const toggleButton = document.getElementById("toggle-button");
+
+      const stateData = {
+        isDarkMode: false,
+        timeoutId: null,
+        styleChange: {
+          light: {
+            backgroundColor: "#fff",
+            color: "black",
+          },
+          dark: {
+            backgroundColor: "#333",
+            color: "white",
+          },
+        },
+      };
+
+      function applyStyles(element, styles) {
+        for (const stylename in styles) {
+          element.style[stylename] = styles[stylename];
+        }
+      }
+
+      function setInitiakStyles() {
+        const bodyStyles = {
+          transition: "background-color 0.3s, color 0.3s",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+          margin: "0",
+          fontFamily: "Arial, sans-serif",
+        };
+        applyStyles(body, bodyStyles);
+
+        const buttonStyles = {
+          padding: "10px 20px",
+          fontSize: "16px",
+          cursor: "pointer",
+          backgroundColor: "#3490dc",
+          color: "white",
+          border: "none",
+          borderRadius: "4px",
+        };
+        applyStyles(toggleButton, buttonStyles);
+        applyStyles(body, stateData.styleChange.light);
+      }
+
+      function toggleDarkMode() {
+        if (stateData.isDarkMode) {
+          stateData.isDarkMode = false;
+        } else {
+          stateData.isDarkMode = true;
+        }
+
+        let modeStyles;
+        if (stateData.isDarkMode) {
+          modeStyles = stateData.styleChange.dark;
+          toggleButton.textContent = "라이트 모드 전환";
+        } else {
+          modeStyles = stateData.styleChange.light;
+          toggleButton.textContent = "라이트 모드 전환";
+        }
+
+        applyStyles(body, modeStyles);
+
+        if (stateData.timeoutId) {
+          clearTimeout(stateData.timeoutId);
+        }
+        stateData.timeoutId = setTimeout(toggleDarkMode, 3000);
+      }
+
+      toggleButton.addEventListener("click", toggleDarkMode);
+
+      setInitiakStyles();
+
+      stateData.timeoutId = setTimeout(toggleDarkMode, 3000);
+    </script>
+  </body>
+</html>
